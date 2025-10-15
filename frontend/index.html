@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoWarriors - Blockchain Battle Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=MedievalSharp&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cinzel', serif;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="%23140a05" width="100" height="100"/><path d="M0 0L50 50L0 100M50 0L100 50L50 100M100 0L100 100M0 50L100 50" stroke="%23251609" stroke-width="0.5" opacity="0.3"/></svg>');
+            background-size: cover, 100px 100px;
+            color: #f4e4c1;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            background: linear-gradient(135deg, rgba(20, 10, 5, 0.95) 0%, rgba(40, 20, 10, 0.95) 100%);
+            padding: 25px 30px;
+            border-radius: 0;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            border: 3px solid #8b6914;
+            border-top: 6px solid #d4af37;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(212, 175, 55, 0.3),
+                0 0 40px rgba(212, 175, 55, 0.1);
+            position: relative;
+        }
+
+        header::before,
+        header::after {
+            content: '⚔';
+            position: absolute;
+            font-size: 2em;
+            color: #d4af37;
+            opacity: 0.3;
+        }
+
+        header::before {
+            top: 10px;
+            left: 10px;
+        }
+
+        header::after {
+            bottom: 10px;
+            right: 10px;
+            transform: rotate(180deg);
+        }
+
+        h1 {
+            font-family: 'MedievalSharp', serif;
+            font-size: 2.8em;
+            background: linear-gradient(180deg, #ffd700 0%, #d4af37 50%, #8b6914 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+            letter-spacing: 2px;
+        }
+
+        .wallet-info {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .balance-box {
+            background: linear-gradient(135deg, rgba(139, 105, 20, 0.3) 0%, rgba(60, 40, 10, 0.3) 100%);
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 2px solid #8b6914;
+            box-shadow: 
+                inset 0 1px 3px rgba(0, 0, 0, 0.5),
+                0 2px 8px rgba(0, 0, 0, 0.3);
+            font-size: 0.9em;
+        }
+
+        .balance-box span {
+            font-weight: bold;
+            color: #ffd700;
+            font-size: 1.3em;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        button {
+            background: linear-gradient(135deg, #d4af37 0%, #8b6914 100%);
+            border: 3px solid #6b5310;
+            padding: 12px 28px;
+            border-radius: 6px;
+            color: #1a0f05;
+            font-size: 15px;
+            font-weight: bold;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 
+                0 4px 0 #5a4510,
+                0 6px 15px rgba(0, 0, 0, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 0 #5a4510,
+                0 8px 20px rgba(0, 0, 0, 0.5);
+            filter: brightness(1.1);
+        }
+
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 
+                0 2px 0 #5a4510,
+                0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        button:disabled {
+            background: linear-gradient(135deg, #666 0%, #444 100%);
+            cursor: not-allowed;
+            transform: none;
+            border-color: #333;
+            box-shadow: 0 2px 0 #333;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            background: linear-gradient(135deg, rgba(20, 10, 5, 0.95) 0%, rgba(40, 20, 10, 0.95) 100%);
+            padding: 30px;
+            border-radius: 0;
+            border: 3px solid #8b6914;
+            border-top: 4px solid #d4af37;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(212, 175, 55, 0.2);
+            position: relative;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        }
+
+        .buy-token-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section h2 {
+            margin-bottom: 25px;
+            color: #ffd700;
+            border-bottom: 2px solid #8b6914;
+            padding-bottom: 15px;
+            font-family: 'MedievalSharp', serif;
+            font-size: 1.8em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #d4af37;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 2px solid #8b6914;
+            font-size: 15px;
+            background: rgba(244, 228, 193, 0.95);
+            color: #1a0f05;
+            font-family: 'Cinzel', serif;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 
+                inset 0 2px 4px rgba(0, 0, 0, 0.3),
+                0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .warriors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            min-height: 300px; 
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 10px;
+            transition: height 0.3s ease;
+        }
+
+        .warriors-grid::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .warriors-grid::-webkit-scrollbar-track {
+            background: rgba(20, 10, 5, 0.5);
+            border: 1px solid #8b6914;
+        }
+
+        .warriors-grid::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #d4af37 0%, #8b6914 100%);
+            border-radius: 6px;
+            border: 1px solid #6b5310;
+        }
+
+        .warrior-card {
+            background: linear-gradient(135deg, rgba(40, 20, 10, 0.95) 0%, rgba(60, 30, 15, 0.95) 100%);
+            padding: 20px;
+            border-radius: 0;
+            border: 3px solid #8b6914;
+            border-top: 4px solid #d4af37;
+            box-shadow: 
+                0 6px 20px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(212, 175, 55, 0.2);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .warrior-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 12px 30px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(212, 175, 55, 0.2);
+            border-top-color: #ffd700;
+        }
+
+        .warrior-card h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            font-family: 'MedievalSharp', serif;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .warrior-image {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .warrior-image::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            background: linear-gradient(45deg, #d4af37, #ffd700, #d4af37);
+            border-radius: 12px;
+            opacity: 0.3;
+            filter: blur(10px);
+        }
+
+        .warrior-image img {
+            width: 140px;
+            height: 140px;
+            border: 3px solid #d4af37;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        .warrior-stats {
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        .stat-bar {
+            background: rgba(0, 0, 0, 0.4);
+            height: 24px;
+            border-radius: 4px;
+            margin: 8px 0;
+            overflow: hidden;
+            border: 1px solid #8b6914;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .stat-fill {
+            background: linear-gradient(90deg, #d4af37 0%, #ffd700 100%);
+            height: 100%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #1a0f05;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .health-bar .stat-fill {
+            background: linear-gradient(90deg, #c41e3a 0%, #ff6b6b 100%);
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .warrior-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .warrior-actions button {
+            flex: 1;
+            padding: 10px;
+            font-size: 13px;
+        }
+
+        .battle-queue {
+            background: linear-gradient(135deg, rgba(139, 105, 20, 0.2) 0%, rgba(60, 40, 10, 0.2) 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px solid #8b6914;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+            
+        }
+
+        .leaderboard-table th,
+        .leaderboard-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid rgba(139, 105, 20, 0.3);
+        }
+
+        .leaderboard-table th {
+            background: linear-gradient(135deg, rgba(139, 105, 20, 0.4) 0%, rgba(60, 40, 10, 0.4) 100%);
+            color: #ffd700;
+            font-family: 'MedievalSharp', serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.95em;
+        }
+
+        .leaderboard-table tr:hover td {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .leaderboard-table tr:first-child td {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(20, 10, 5, 0.98) 0%, rgba(40, 20, 10, 0.98) 100%);
+            padding: 40px;
+            border-radius: 0;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 4px solid #8b6914;
+            border-top: 6px solid #d4af37;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.9),
+                inset 0 1px 0 rgba(212, 175, 55, 0.3);
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 32px;
+            cursor: pointer;
+            color: #d4af37;
+            line-height: 1;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #ffd700;
+            transform: rotate(90deg);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            font-size: 1.2em;
+            color: #d4af37;
+        }
+
+        .status-message {
+            background: linear-gradient(135deg, rgba(34, 139, 34, 0.3) 0%, rgba(0, 100, 0, 0.3) 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 6px solid #228b22;
+            border: 2px solid #228b22;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, rgba(178, 34, 34, 0.3) 0%, rgba(139, 0, 0, 0.3) 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 6px solid #b22222;
+            border: 2px solid #b22222;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .wallet-info {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .warriors-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+
+        h1 {
+            animation: glow 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>⚔️ CryptoWarriors ⚔️</h1>
+            <div class="wallet-info">
+                <div class="balance-box">
+                    <div>WAR Tokens: <span id="warBalance">0</span></div>
+                </div>
+                <div class="balance-box">
+                    <div>Warriors: <span id="warriorCount">0</span></div>
+                </div>
+                <button id="connectWallet">🦊 Connect MetaMask</button>
+            </div>
+        </header>
+
+        <div id="statusMessage"></div>
+
+        <div class="main-content">
+            <div class="section">
+                <h2>🗡️ Forge New Warrior</h2>
+                <div class="form-group">
+                    <label>Warrior Name:</label>
+                    <input type="text" id="warriorName" placeholder="Enter warrior name" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label>Warrior Class:</label>
+                    <select id="warriorClass">
+                        <option value="Knight">🛡️ Knight - High Defense</option>
+                        <option value="Mage">🔮 Mage - High Attack</option>
+                        <option value="Archer">🏹 Archer - Balanced</option>
+                    </select>
+                </div>
+                <button id="createWarrior">Forge Warrior (100 WAR)</button>
+                <p style="margin-top: 15px; font-size: 0.9em; opacity: 0.8; text-align: center;">
+                    Each warrior is a unique NFT with random stats!
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>⚔️ Battle Arena</h2>
+                <p style="margin-bottom: 20px; text-align: center;">Select a warrior and enter the battle queue. Auto-match when 2 players ready!</p>
+                <div class="form-group">
+                    <label>Select Your Champion:</label>
+                    <select id="battleWarriorSelect">
+                        <option value="">-- Select Warrior --</option>
+                    </select>
+                </div>
+                <button id="enterBattle">Enter Battle (10 WAR)</button>
+
+                <div class="battle-queue">
+                    <strong style="color: #ffd700;">Queue Status:</strong>
+                    <div id="queueStatus" style="margin-top: 10px;">Loading...</div>
+                </div>
+                   
+
+                <!-- Battle Result Modal -->
+                <div id="battleResultModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center;">
+                    <div style="background: linear-gradient(135deg, rgba(20, 10, 5, 0.98) 0%, rgba(40, 20, 10, 0.98) 100%); padding: 40px; border-radius: 0; border: 4px solid #8b6914; border-top: 6px solid #d4af37; max-width: 600px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);">
+                        <h2 id="battleResultTitle" style="color: #ffd700; font-size: 2.5em; margin-bottom: 20px; font-family: 'MedievalSharp', serif;">⚔ BATTLE COMPLETE! ⚔</h2>
+                        <div id="battleResultContent" style="font-size: 1.2em; line-height: 2;">
+                            <!-- Battle result details will be inserted here -->
+                        </div>
+                        <button onclick="closeBattleResultModal()" style="margin-top: 30px; padding: 15px 40px; font-size: 1.1em;">
+                            Continue
+                        </button>
+                   </div>
+                </div>
+               
+            </div>
+
+            <div class="section" style="grid-column: 1 / -1;">
+                <h2>🛡️ My Warriors</h2>
+                <div id="myWarriorsGrid" class="warriors-grid">
+                    <div class="loading">Connect your wallet to see your warriors</div>
+                </div>
+            </div>
+
+            <div class="section" style="grid-column: 1 / -1;">
+                <h2>🏆 Hall of Champions</h2>
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Champion</th>
+                            <th>Victories</th>
+                            <th>Defeats</th>
+                            <th>Win Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+             <div class="section" style="align-self: flex-start;">
+                <h2>💰 Purchase WAR Tokens</h2>
+                <p style="text-align: center; margin-bottom: 15px; font-size: 0.9em; opacity: 0.9;">
+                    Exchange Rate: <strong style="color: #FFD700;">1 ETH = 1,000 WAR</strong>
+                </p>
+                <div class="buy-token-form">
+                    <input type="number" id="ethAmount" min="0.001" step="0.001" placeholder="Enter ETH amount (e.g., 0.01)"
+                        style="max-width: 220px;">
+                    <button id="buyTokensBtn">Buy WAR Tokens</button>
+                </div>
+                <p id="buyStatus" style="text-align: center; margin-top: 15px; font-size: 0.9em; opacity: 0.8;"></p>
+            </div>
+
+            <div class="section" style="align-self: flex-start; text-align: center; height:307.67px;  ">
+                <h2>🎁 Daily Tribute-0.1ETH</h2>
+                <p style="margin-bottom: 20px; font-size: 0.9em; opacity: 0.9; text-align: center;">
+                    Claim 100 WAR tokens once every 24 hours!(0.1ETH + gas fee )
+                </p>
+                <button id="claimDailyGift" style="display: block; margin: 0 auto;">Claim Gift (100 WAR)</button>
+                <div id="dailyGiftStatus" style="margin-top: 15px; font-size: 0.9em; text-align: center;">Ready to claim!</div>
+            </div>
+
+            <div class="section" style="grid-column: 1 / -1;">
+                <h2>🏪 Warrior Marketplace</h2>
+               
+                <div style="text-align: center; margin: 20px 0;">
+                    <button id="forceRefreshAll" style="padding: 12px 30px; font-size: 16px;">
+                        🔄 Refresh Everything
+                    </button>
+                </div>
+                <p style="text-align: center; margin-bottom: 20px;">
+                    Buy and sell warriors on-chain with automatic 10% creator royalty
+                </p>
+                
+                <!-- Marketplace Grid -->
+                <div style="margin-bottom: 30px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="color: #ffd700; margin: 0;">Available Warriors</h3>
+                        <button id="refreshListingsBtn" style="padding: 8px 16px; font-size: 13px;">
+                            🔄 Refresh
+                        </button>
+                    </div>
+                    <div id="marketplaceListings" class="warriors-grid">
+                        <div class="loading">Connect wallet to see marketplace</div>
+                    </div>
+                </div>
+                
+                <hr style="border: 1px solid #8b6914; margin: 30px 0;">
+                
+                
+
+
+                <!-- Seller Section -->
+                <div style="background: rgba(139, 105, 20, 0.2); padding: 25px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #ffd700; margin-bottom: 20px;">📤 List Your Warrior</h3>
+                    
+                    <div class="form-group">
+                        <label>Select Warrior:</label>
+                        <select id="sellWarriorSelect">
+                            <option value="">-- Select a warrior --</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Or Enter Token ID:</label>
+                        <input 
+                            type="number" 
+                            id="sellTokenId" 
+                            placeholder="Warrior ID" 
+                            min="0" 
+                            step="1"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>List Price (ETH):</label>
+                        <input 
+                            type="number" 
+                            id="listPrice" 
+                            placeholder="0.1" 
+                            min="0.001" 
+                            step="0.001"
+                        >
+                        <small style="display: block; margin-top: 5px; opacity: 0.7;">
+                            You'll receive 90% (10% royalty to creator)
+                        </small>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button id="listWarriorBtn" style="flex: 1;">List Warrior</button>
+                        <button id="delistWarriorBtn" style="flex: 1; background: linear-gradient(135deg, #b22222 0%, #8b0000 100%);">
+                            Remove Listing
+                        </button>
+                    </div>
+                    <p id="listStatus" style="margin-top: 10px; text-align: center;"></p>
+                </div>
+                
+                <!-- Buyer Section -->
+                <div style="background: rgba(34, 139, 34, 0.2); padding: 25px; border-radius: 8px;">
+                    <h3 style="color: #90EE90; margin-bottom: 20px;">🛒 Buy Warrior by ID</h3>
+                    
+                    <div class="form-group">
+                        <label>Warrior Token ID:</label>
+                        <input 
+                            type="number" 
+                            id="buyTokenId" 
+                            placeholder="Enter warrior ID" 
+                            min="0" 
+                            step="1"
+                        >
+                        <small style="display: block; margin-top: 5px; opacity: 0.7;">
+                            Or browse available warriors above
+                        </small>
+                    </div>
+                    
+                    <button id="buyListedWarriorBtn" style="width: 100%;">Buy Warrior</button>
+                    <p id="buyStatus" style="margin-top: 10px; text-align: center;"></p>
+                </div>
+            </div>
+    
+    <div id="warriorModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div id="warriorDetails"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="js/warTokenABI.js"></script>
+    <script src="js/warriorNFTABI.js"></script>
+    <script src="js/gameEngineABI.js"></script>
+    <script src="js/marketplaceABI.js"></script>
+    <script src="js/avatarGenerator.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

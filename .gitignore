@@ -1,0 +1,84 @@
+node_modules
+.env
+
+# Hardhat files
+/cache
+/artifacts
+
+# TypeChain files
+/typechain
+/typechain-types
+
+# solidity-coverage files
+/coverage
+/coverage.json
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment variables 
+.env
+.env.local
+.env.*.local
+
+# Hardhat files
+cache/
+artifacts/
+typechain/
+typechain-types/
+
+# Testing
+coverage/
+coverage.json
+.coverage_cache/
+.coverage_contracts/
+
+# Build outputs
+dist/
+build/
+
+# Deployment info (contains sensitive addresses)
+deployments/
+deployment-info.json
+.openzeppelin/
+marketplace-deployment.json
+new-wartoken-deployment.json
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+
+
+
+# Gas reports
+gas-report.txt
+
+# Temporary files
+*.tmp
+temp/
+tmp/
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+
+# Backup files
+*.backup
+*.bak
