@@ -2,7 +2,6 @@
 
 A decentralized NFT battle game built on Ethereum where players create unique warrior NFTs, battle other players, and trade warriors on an integrated marketplace.
 
-![CryptoWarriors Banner](https://via.placeholder.com/1200x300/140a05/ffd700?text=CryptoWarriors)
 
 ## 🎮 Features
 
