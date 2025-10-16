@@ -77,7 +77,7 @@ async function init() {
 
 // Connect MetaMask wallet
 async function connectWallet() {
-  console.log("🔘 Connect wallet clicked");
+ 
 
   try {
     const accounts = await window.ethereum.request({
@@ -253,7 +253,6 @@ async function loadMyWarriors() {
     // ✅ USE ACTUAL OWNERSHIP CHECK (not broken contract array)
     const warriorIds = await getActualWarriorsByOwner(account);
 
-    console.log("✅ Found warriors:", warriorIds);
 
     document.getElementById("warriorCount").textContent = warriorIds.length;
 
@@ -291,7 +290,6 @@ async function loadMyWarriors() {
       sellSelect.appendChild(sellOption);
     }
 
-    console.log("✅ Warriors loaded successfully!");
   } catch (error) {
     console.error("Error loading warriors:", error.message);
     document.getElementById("warriorCount").textContent = "?";
@@ -606,8 +604,8 @@ function createMarketplaceListing(tokenId, warrior, listing) {
             )}...</div>
             <div><strong>Class:</strong> ${warrior[10]}</div>
             <div><strong>Level:</strong> ${warrior[5]} | <strong>XP:</strong> ${
-    warrior[6]
-  }</div>
+             warrior[6]
+           }</div>
             
             <div style="margin-top: 10px;">
                 <div><strong>Attack:</strong> ${warrior[1]}</div>
@@ -635,8 +633,8 @@ function createMarketplaceListing(tokenId, warrior, listing) {
             
             <div>
                 <div><strong>Health:</strong> ${warrior[3]} / ${
-    warrior[4]
-  }</div>
+                   warrior[4]
+                }</div>
                 <div class="stat-bar health-bar">
                     <div class="stat-fill" style="width: ${healthPercent}%">
                         ${healthPercent.toFixed(0)}%
@@ -666,7 +664,7 @@ function createMarketplaceListing(tokenId, warrior, listing) {
 // Updated listWarriorForSale with improved validation and feedback
 
 async function listWarriorForSale() {
-  console.log("📤 List warrior for sale clicked");
+  
 
   if (!account) {
     showError("Please connect your wallet first");
@@ -768,7 +766,7 @@ async function listWarriorForSale() {
 
     showSuccess(`✅ Warrior #${tokenIdNum} listed for ${priceETH} ETH!`);
 
-    // ✅ STEP 6: Verify listing
+    //  STEP 6: Verify listing
     const finalListing = await marketplace.methods
       .getListing(tokenIdNum)
       .call();
@@ -799,7 +797,6 @@ async function listWarriorForSale() {
       await loadMarketplaceListings();
       await loadMyWarriors();
       await loadWARBalance();
-      console.log("✅ Marketplace refreshed after listing!");
     }, 3000);
   } catch (error) {
     console.error("Error listing warrior:", error);
@@ -823,7 +820,6 @@ async function listWarriorForSale() {
 
 // Delist warrior
 async function delistWarrior() {
-  console.log("🗑️ Delist warrior clicked");
 
   if (!account) {
     showError("Please connect your wallet first");
@@ -884,7 +880,6 @@ async function delistWarrior() {
     setTimeout(async () => {
       await loadMarketplaceListings();
       await loadMyWarriors();
-      console.log("✅ Marketplace refreshed after delisting!");
     }, 2000);
   } catch (error) {
     console.error("Error delisting warrior:", error);
@@ -936,7 +931,7 @@ async function buyListedWarrior() {
       return;
     }
 
-    // ✅ STEP 3: Verify marketplace has approval
+    //  STEP 3: Verify marketplace has approval
     const approvedAddress = await warriorNFT.methods
       .getApproved(tokenIdNum)
       .call();
@@ -961,7 +956,7 @@ async function buyListedWarrior() {
       `Purchasing warrior #${tokenIdNum} for ${priceETH} ETH... Please confirm`
     );
 
-    // ✅ STEP 4: Execute purchase
+    //  STEP 4: Execute purchase
     const tx = await marketplace.methods.buyWarrior(tokenIdNum).send({
       from: account,
       value: listing.price,
@@ -970,7 +965,7 @@ async function buyListedWarrior() {
 
     console.log("✅ Purchase transaction:", tx.transactionHash);
 
-    // ✅ STEP 5: VERIFY transfer happened
+    //  STEP 5: VERIFY transfer happened
     const newOwner = await warriorNFT.methods.ownerOf(tokenIdNum).call();
     console.log("New owner:", newOwner);
     console.log("Buyer address:", account);
@@ -1007,7 +1002,6 @@ async function buyListedWarrior() {
       await loadMarketplaceListings();
       await loadMyWarriors();
       await loadWARBalance();
-      console.log("✅ Marketplace refreshed after purchase!");
     }, 5000);
   } catch (error) {
     console.error("Error buying warrior:", error);
@@ -1046,7 +1040,7 @@ async function quickBuy(tokenId, priceETH) {
   if (!confirmed) return;
 
   try {
-    // ✅ Verify marketplace has approval
+    // Verify marketplace has approval
     const approvedAddress = await warriorNFT.methods
       .getApproved(tokenId)
       .call();
@@ -1068,7 +1062,7 @@ async function quickBuy(tokenId, priceETH) {
       gas: 300000, // Ensure enough gas
     });
 
-    // ✅ Verify transfer
+    //  Verify transfer
     const newOwner = await warriorNFT.methods.ownerOf(tokenId).call();
     if (newOwner.toLowerCase() === account.toLowerCase()) {
       showSuccess(`🎉 Warrior #${tokenId} is now YOURS!`);
@@ -1077,13 +1071,11 @@ async function quickBuy(tokenId, priceETH) {
     }
 
     setTimeout(async () => {
-      console.log("⏳ Waiting for blockchain to finalize...");
       showSuccess("⏳ Refreshing data...");
       await new Promise((resolve) => setTimeout(resolve, 3000));
       await loadMarketplaceListings();
       await loadMyWarriors();
       await loadWARBalance();
-      console.log("✅ Data refreshed!");
       showSuccess("✅ Purchase complete and data refreshed!");
     }, 5000);
   } catch (error) {
@@ -1151,8 +1143,8 @@ async function showWarriorDetails(warriorId) {
                 <p><strong>Class:</strong> ${warrior[10]}</p>
                 <p><strong>Level:</strong> ${warrior[5]}</p>
                 <p><strong>Experience:</strong> ${warrior[6]} / ${
-      Number(warrior[5]) * 100
-    }</p>
+                Number(warrior[5]) * 100
+                }</p>
                 <p><strong>Attack:</strong> ${warrior[1]}</p>
                 <p><strong>Defense:</strong> ${warrior[2]}</p>
                 <p><strong>Health:</strong> ${warrior[3]} / ${warrior[4]}</p>
@@ -1446,7 +1438,7 @@ async function claimDailyGift() {
     );
 
     // Mint 100 WAR tokens
-    const giftAmount = web3.utils.toWei("1000", "ether");
+    const giftAmount = web3.utils.toWei("100", "ether");
 
     const tx = await warToken.methods.buyTokens().send({
       from: account,
