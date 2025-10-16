@@ -89,9 +89,10 @@ ETHERSCAN_API_KEY=your_etherscan_api_key
 npx hardhat compile
 ```
 
-5. Run tests (optional):
+5. play the game :
 ```bash
-npx hardhat test
+#    use local server
+   npx http-server
 ```
 
 ## 🎯 How to Use
@@ -139,8 +140,8 @@ node scripts/extractABIs.js
 Run local frontend:
 ```bash
 cd frontend
-# Open index.html in browser or use local server
-python -m http.server 8000
+#    use local server
+   npx http-server
 ```
 
 ## 🐛 Known Issues
