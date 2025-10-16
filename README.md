@@ -2,7 +2,6 @@
 
 A decentralized NFT battle game built on Ethereum where players create unique warrior NFTs, battle other players, and trade warriors on an integrated marketplace.
 
-![CryptoWarriors Banner](https://via.placeholder.com/1200x300/140a05/ffd700?text=CryptoWarriors)
 
 ## 🎮 Features
 
@@ -40,6 +39,23 @@ A decentralized NFT battle game built on Ethereum where players create unique wa
 | WarriorNFT | `0x58488197989BEc8B1625C9817fB082E90CfaF9E5` | ERC721 warrior NFTs |
 | GameEngine | `0x6977f79689588c0EDdb6A9bFAEf3f72a7B61Ce26` | Battle logic & queue system |
 | Marketplace | `0x1fA3e6EaA9C53ab5F8A326a160Ff080179D7c1d6` | NFT trading platform |
+
+## 📂Project Structure 
+```text
+CryptoWarriors/
+│
+├── index.html # Main game interface (HTML structure and embedded CSS)
+│
+├── js/
+│ ├── app.js # Core game logic and Web3 interactions
+│ ├── warTokenABI.js # ABI for WAR Token smart contract
+│ ├── warriorNFTABI.js # ABI for Warrior NFT smart contract
+│ ├── gameEngineABI.js # ABI for Game Engine smart contract
+│ └── avatarGenerator.js # Utility that dynamically generates warrior avatars
+│
+└── README.md # Project documentation (this file)
+```
+----------------------------------------------
 
 ## 🚀 Installation
 
