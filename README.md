@@ -92,10 +92,9 @@ npx hardhat compile
 
 5. play the game :
 ```bash
-#    use local server
    npx http-server
 ```
-
+6. *If step 5 is failing, you can open a bash in the root folder and run npx http-server from there*
 ## 🎯 How to Use
 
 ### **Playing the Game**
