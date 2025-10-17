@@ -83,6 +83,7 @@ SEPOLIA_RPC_URL=your_alchemy_or_infura_url
 PRIVATE_KEY=your_wallet_private_key
 ETHERSCAN_API_KEY=your_etherscan_api_key
 ```
+[How to get your Infura URL](#-how-to-get-your-infura-url-rpc-endpoint-for-a-blockchain-project) 📧
 
 4. Compile contracts:
 ```bash
@@ -189,7 +190,48 @@ cd frontend
 - OpenZeppelin for secure contract libraries
 - Chainlink for VRF integration
 - Medieval fantasy theme inspiration
+---
+⚔️ **Built with passion for blockchain gaming** ⚔️
 
 ---
 
-⚔️ **Built with passion for blockchain gaming** ⚔️
+## 🗃️Appendices
+
+### How to get infura URL
+## 🌐 How to Get Your Infura URL (RPC Endpoint) for a Blockchain Project
+
+An **Infura URL** is a dedicated **Remote Procedure Call (RPC) Endpoint** that allows your decentralized application (dApp), script, or development environment (like Hardhat or Truffle) to connect and interact with a live blockchain network (such as Ethereum, Polygon, Arbitrum, etc.) without having to run your own full node.
+
+---
+
+## 🚀 Step 1: Create an Infura Account
+
+1.  **Navigate to the Infura Website:** Go to [https://infura.io/](https://infura.io/) and sign up for an account.
+2.  **Verify Email:** Complete the account creation process by verifying your email address.
+
+## ✨ Step 2: Create a New Project
+
+1.  **Access the Dashboard:** Log into the Infura dashboard at [https://app.infura.io/](https://app.infura.io/).
+2.  **Create a Key:** Click the **"Create New Key"** button (or "Create New Project").
+3.  **Select a Product:** When prompted, select the blockchain you intend to use (e.g., **Ethereum** or **IPFS**).
+4.  **Name Your Project:** Give your project a clear, descriptive name (e.g., `my-defi-app-staging`).
+5.  **Click "Create":** This action generates your unique **Project ID** (also called the **Web3 API Key**).
+
+## 🔗 Step 3: Retrieve Your Infura URL (Endpoint)
+
+After creating the project, you will be directed to the project details page where your endpoints are listed.
+
+### Endpoint Structure
+
+The Infura URL (your RPC Endpoint) is constructed by combining the base URL for the desired network with your unique Project ID:
+**https://<network-name>.infura.io/v3/<YOUR_PROJECT_ID>**
+## 🔒 Step 4: Security (CRITICAL)
+
+**Your Project ID is a sensitive credential.** If exposed, others can use your Infura subscription limits, monitor your project's traffic, and potentially compromise your application's integrity.
+
+### Never hardcode your Project ID directly in your source files.
+
+Instead, always use **environment variables** to manage your keys securely
+---
+
+
