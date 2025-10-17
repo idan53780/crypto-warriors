@@ -9,7 +9,7 @@ A decentralized NFT battle game built on Ethereum where players create unique wa
 - **⚔️ Battle System**: Enter battle queue and auto-match with opponents for PvP combat
 - **💰 WAR Token Economy**: In-game ERC20 currency for all transactions
 - **🏪 NFT Marketplace**: Buy and sell warriors with automatic 10% creator royalty
-- **🎁 Daily Rewards**: Claim daily gift tokens (24-hour cooldown)
+- **🎁 Daily 100 tokens**: Claim daily  tokens -0.1eth (24-hour cooldown)
 - **🏆 Leaderboard**: Track top players by wins and win rate
 - **🎨 Unique Avatars**: Each warrior has procedurally generated visual appearance
 
