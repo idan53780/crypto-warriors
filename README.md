@@ -101,7 +101,7 @@ npx hardhat compile
 ### **Playing the Game**
 
 1. **Connect Wallet**
-   - Open `frontend/index.html` in browser
+   - Open `frontend/index.html` in browser(for now use the 8080 port)🚧
    - Click "Connect MetaMask"
    - Approve connection
 
