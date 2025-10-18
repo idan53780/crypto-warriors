@@ -68,7 +68,7 @@ CryptoWarriors/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/YOUR_USERNAME/crypto-warriors.git
+git clone https://github.com/idan53780/crypto-warriors.git
 cd crypto-warriors
 ```
 
